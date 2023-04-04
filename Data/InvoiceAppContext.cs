@@ -1,12 +1,14 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using PartyProductAPI.Models;
 
 #nullable disable
 
 namespace PartyProductAPI.Data
 {
-    public partial class InvoiceAppContext : DbContext
+    public partial class InvoiceAppContext : IdentityDbContext<ApplicationUser>
     {
         public InvoiceAppContext()
         {
@@ -33,6 +35,8 @@ namespace PartyProductAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
             modelBuilder.Entity<AssignedPartyProduct>(entity =>

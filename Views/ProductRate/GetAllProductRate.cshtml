@@ -1,0 +1,38 @@
+﻿@{
+    List<ProductRateModel> allProductRate = await _productRateRepo.GetAllProductRateAsync();
+}
+
+<div class="container">
+    <h2 class="my-3">Product Rate</h2>
+    <a asp-controller="ProductRate" asp-action="AddNewProductRate" class="btn btn-outline-success mb-3">Add Rate</a>
+
+    <table class="table table-striped">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th scope="col" class="py-3">#</th>
+                <th scope="col" class="py-3">ID</th>
+                <th scope="col" class="py-3">Product</th>
+                <th scope="col" class="py-3">Rate</th>
+                <th scope="col" class="py-3">Date of Rate</th>
+                <th scope="col" class="py-3">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ProductRateModel productRate in allProductRate)
+            {
+                ProductModel productname = await _productRepo.GetProductById(productRate.ProductID);
+                <tr>
+                    <td scope="row">@(allProductRate.IndexOf(productRate) + 1)</td>
+                    <td>@productRate.PrtId</td>
+                    <td>@productname.ProductName</td>
+                    <td>@productRate.Rate</td>
+                    <td>@productRate.DateOfRate</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary">@Html.ActionLink("Edit", "UpdateProductRate", new { id = productRate.PrtId }, new { @class = "text-white text-decoration-none" })</button>
+                        <button class="btn btn-sm btn-danger">@Html.ActionLink("Delete", "DeleteProductRate", new { id = productRate.PrtId }, new { @class = "text-white text-decoration-none" })</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

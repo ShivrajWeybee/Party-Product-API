@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PartyProductAPI.Data;
 using PartyProductAPI.Models;
 using System.Collections.Generic;
@@ -10,40 +11,48 @@ namespace PartyProductAPI.Repository
     public class InvoiceRepository : IInvoiceRepository
     {
         private readonly InvoiceAppContext _context;
+        private readonly IMapper _mapper;
 
-        public InvoiceRepository(InvoiceAppContext context)
+        public InvoiceRepository(InvoiceAppContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<List<InvoiceModel>> GetAllInvoiceAsync()
         {
-            var result = await _context.Invoices.Select(x => new InvoiceModel()
-            {
-                InvoiceId = x.InvoiceId,
-                PartyId = x.PartyId,
-                ProductId = x.ProductId,
-                Quantity = x.Quantity,
-                Rate = x.Rate,
-                Total = x.Total,
-            }).ToListAsync();
+            //var result = await _context.Invoices.Select(x => new InvoiceModel()
+            //{
+            //    InvoiceId = x.InvoiceId,
+            //    PartyId = x.PartyId,
+            //    ProductId = x.ProductId,
+            //    Quantity = x.Quantity,
+            //    Rate = x.Rate,
+            //    Total = x.Total,
+            //}).ToListAsync();
 
-            return result;
+            //return result;
+
+            var result = await _context.Invoices.ToListAsync();
+            return _mapper.Map<List<InvoiceModel>>(result);
         }
 
         public async Task<InvoiceModel> GetInvoiceByIdAsync(int id)
         {
-            var result = await _context.Invoices.Where(x => x.InvoiceId == id).Select(x => new InvoiceModel()
-            {
-                InvoiceId = x.InvoiceId,
-                PartyId = x.PartyId,
-                ProductId = x.ProductId,
-                Quantity = x.Quantity,
-                Rate = x.Rate,
-                Total = x.Total,
-            }).FirstOrDefaultAsync();
+            //var result = await _context.Invoices.Where(x => x.InvoiceId == id).Select(x => new InvoiceModel()
+            //{
+            //    InvoiceId = x.InvoiceId,
+            //    PartyId = x.PartyId,
+            //    ProductId = x.ProductId,
+            //    Quantity = x.Quantity,
+            //    Rate = x.Rate,
+            //    Total = x.Total,
+            //}).FirstOrDefaultAsync();
 
-            return result;
+            //return result;
+
+            var result = await _context.Invoices.FindAsync(id);
+            return _mapper.Map<InvoiceModel>(result);
         }
 
         public async Task<int> AddNewInvoiceAsync(InvoiceModel invoice)
@@ -77,14 +86,14 @@ namespace PartyProductAPI.Repository
             }
         }
 
-        public async Task DeleteInvoiceAsync(int id)
+        public async Task DeleteInvoiceAsync()
         {
-            var invoice = new Invoice()
-            {
-                InvoiceId = id
-            };
+            //var invoice = new Invoice()
+            //{
+            //    InvoiceId = id
+            //};
 
-            _context.Invoices.Remove(invoice);
+            _context.Invoices.RemoveRange(_context.Invoices);
             await _context.SaveChangesAsync();
         }
     }

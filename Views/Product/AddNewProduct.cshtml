@@ -1,0 +1,12 @@
+﻿@model PartyProductAPI.Models.ProductModel
+
+<div class="container">
+    <h2 class="my-3">Add New Product</h2>
+    <form asp-action="AddNewProduct" asp-controller="Product" method="post" enctype="multipart/form-data">
+        <div class="form-group my-2 mb-5">
+            <label asp-for="ProductName" class="fw-semibold fs-5">Product Name</label>
+            <input asp-for="ProductName" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Add Product</button>
+    </form>
+</div>

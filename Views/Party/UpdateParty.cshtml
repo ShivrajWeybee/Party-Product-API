@@ -1,0 +1,15 @@
+﻿@model PartyProductAPI.Models.PartyModel
+@{
+    PartyModel party = ViewBag.Party;
+}
+
+<div class="container">
+    <h2 class="my-3">Add New Party</h2>
+    <form asp-action="UpdateParty" asp-controller="Party"  method="post" enctype="multipart/form-data">
+        <div class="form-group my-2 mb-5">
+            <label asp-for="PartyName" class="fw-semibold fs-5">Party Name</label>
+            <input asp-for="PartyName" class="form-control" value=@party.PartyName />
+        </div>
+        <button type="submit" class="btn btn-primary">Update Party</button>
+    </form>
+</div>

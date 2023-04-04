@@ -1,0 +1,33 @@
+﻿@{
+    List<ProductModel> allProduct = await _productRepo.GetAllProduct();
+}
+
+<div class="container">
+    <h2 class="my-3">Products</h2>
+    <a asp-controller="Product" asp-action="AddNewProduct" class="btn btn-outline-success mb-3">Add Product</a>
+
+    <table class="table table-striped">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th scope="col" class="py-3">#</th>
+                <th scope="col" class="py-3">ProductID</th>
+                <th scope="col" class="py-3">ProductName</th>
+                <th scope="col" class="py-3">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ProductModel product in allProduct)
+            {
+                <tr>
+                    <td scope="row">@(allProduct.IndexOf(product) + 1)</td>
+                    <td>@product.ProductId</td>
+                    <td>@product.ProductName</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary">@Html.ActionLink("Edit", "UpdateProduct", new { id = product.ProductId }, new { @class = "text-white text-decoration-none" })</button>
+                        <button class="btn btn-sm btn-danger">@Html.ActionLink("Delete", "DeleteProduct", new { id = product.ProductId }, new { @class = "text-white text-decoration-none" })</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -11,5 +11,7 @@ namespace PartyProductAPI.Repository
         Task<int> AddNewProductRateAsync(ProductRateModel productRate);
         Task<bool> UpdateNewRateAsync(int id, ProductRateModel rate);
         Task DeleteRateAsync(int id);
+        Task<ProductRateModel> BindRate(string id);
+        Task<double> GetGrandTotal();
     }
 }

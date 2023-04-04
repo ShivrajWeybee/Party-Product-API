@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PartyProductAPI.Data;
 using PartyProductAPI.Models;
 using System.Collections.Generic;
@@ -10,36 +11,42 @@ namespace PartyProductAPI.Repository
     public class ProductRateRepository : IProductRateRepository
     {
         private readonly InvoiceAppContext _context;
+        private readonly IMapper _mapper;
 
-        public ProductRateRepository(InvoiceAppContext context)
+        public ProductRateRepository(InvoiceAppContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<List<ProductRateModel>> GetAllProductRateAsync()
         {
-            var result = await _context.ProductRates.Select(x => new ProductRateModel()
-            {
-                PrtId = x.PrtId,
-                ProductID = x.ProductId,
-                Rate = x.Rate,
-                DateOfRate = x.DateOfRate,
-            }).ToListAsync();
+            //var result = await _context.ProductRates.Select(x => new ProductRateModel()
+            //{
+            //    PrtId = x.PrtId,
+            //    ProductID = x.ProductId,
+            //    Rate = x.Rate,
+            //    DateOfRate = x.DateOfRate,
+            //}).ToListAsync();
+            //return result;
 
-            return result;
+            var result = await _context.ProductRates.ToListAsync();
+            return _mapper.Map<List<ProductRateModel>>(result);
         }
 
         public async Task<ProductRateModel> GetProductByIdAsync(int id)
         {
-            var result = await _context.ProductRates.Where(x => x.PrtId == id).Select(x => new ProductRateModel()
-            {
-                PrtId = x.PrtId,
-                ProductID = x.ProductId,
-                Rate = x.Rate,
-                DateOfRate = x.DateOfRate,
-            }).FirstOrDefaultAsync();
+            //var result = await _context.ProductRates.Where(x => x.PrtId == id).Select(x => new ProductRateModel()
+            //{
+            //    PrtId = x.PrtId,
+            //    ProductID = x.ProductId,
+            //    Rate = x.Rate,
+            //    DateOfRate = x.DateOfRate,
+            //}).FirstOrDefaultAsync();
+            //return result;
 
-            return result;
+            var result = await _context.ProductRates.FindAsync(id);
+            return _mapper.Map<ProductRateModel>(result);
         }
 
         public async Task<int> AddNewProductRateAsync(ProductRateModel productRate)
@@ -83,6 +90,25 @@ namespace PartyProductAPI.Repository
 
             _context.ProductRates.Remove(findRate);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<ProductRateModel> BindRate(string id)
+        {
+            ProductRateModel findRate = await _context.ProductRates.Include(x => x.Product).Where(x => x.ProductId == int.Parse(id)).Select(x => new ProductRateModel()
+            {
+                PrtId = x.PrtId,
+                ProductID = x.ProductId,
+                Rate = x.Rate,
+                DateOfRate = x.DateOfRate,
+            }).FirstOrDefaultAsync();
+
+            return findRate;
+        }
+
+        public async Task<double> GetGrandTotal()
+        {
+            double grandTotal = await _context.Invoices.Select(x => x.Total).SumAsync();
+            return grandTotal;
         }
     }
 }

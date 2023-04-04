@@ -1,0 +1,24 @@
+﻿@model PartyProductAPI.Models.ProductRateModel
+@{
+    ProductRateModel rate = ViewBag.Rate;
+}
+
+<div class="container">
+    <h2 class="my-3">Update Rate</h2>
+    <form asp-action="UpdateProductRate" asp-controller="ProductRate" method="post" enctype="multipart/form-data">
+        <div class="form-group my-2">
+            <label asp-for="ProductID" class="fw-semibold fs-6"></label>
+            <select asp-for="ProductID" class="form-control"
+                    asp-items="(await _productRepo.GetAllProduct()).Select(x => new SelectListItem() { Text = x.ProductName, Value = x.ProductId.ToString(), Selected = (x.ProductId == rate.ProductID) })">
+                <option value="" disabled="disabled">Choose any one</option>
+            </select>
+
+            <label asp-for="Rate" class="fw-semibold fs-6"></label>
+            <input asp-for="Rate" class="form-control" value=@rate.Rate />
+
+            <label asp-for="DateOfRate" class="fw-semibold fs-6"></label>
+            <input asp-for="DateOfRate" class="form-control" disabled="disabled" value="@DateTime.Now" />
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>

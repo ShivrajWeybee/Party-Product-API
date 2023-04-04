@@ -1,0 +1,35 @@
+﻿@{
+    List<PartyModel> allParty = await _partyRepo.GetAllParty();
+}
+
+<div class="container">
+
+    <h2 class="my-3">Party</h2>
+
+    <a asp-controller="Party" asp-action="AddNewParty" class="btn btn-outline-success mb-3">Add Party</a>
+
+    <table class="table table-striped">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th scope="col" class="py-3">#</th>
+                <th scope="col" class="py-3">PartyID</th>
+                <th scope="col" class="py-3">PartyName</th>
+                <th scope="col" class="py-3">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (PartyModel party in allParty)
+            {
+                <tr>
+                    <td scope="row">@(allParty.IndexOf(party) + 1)</td>
+                    <td>@party.PartyId</td>
+                    <td>@party.PartyName</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary">@Html.ActionLink("Edit", "UpdateParty", new { id = party.PartyId }, new { @class = "text-white text-decoration-none" })</button>
+                        <button class="btn btn-sm btn-danger">@Html.ActionLink("Delete", "DeleteParty", new { id = party.PartyId }, new { @class = "text-white text-decoration-none" })</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,118 @@
+﻿@model PartyProductAPI.Models.InvoiceModel
+@{
+    List<InvoiceModel> allInvoice = await _invoiceRepo.GetAllInvoiceAsync();
+    double gTotal = await _productRateRepo.GetGrandTotal();
+}
+
+<div class="container mt-2">
+    <h2 class="my-3">Invoice</h2>
+    <form asp-action="AddNewInvoice" asp-controller="Invoice" method="post" enctype="multipart/form-data">
+
+        <div class="form-group my-2">
+            <label asp-for="PartyId" class="fw-semibold fs-6"></label>
+            <select asp-for="PartyId" class="form-control" onchange="onPartySelected(this)" id="partyDropdown"
+                    asp-items="(await _partyRepo.GetAllParty()).Select(x => new SelectListItem() { Text = x.PartyName, Value = x.PartyId.ToString() })">
+                <option value="">Choose any one</option>
+            </select>
+        </div>
+
+        <div class="form-group my-2">
+            <label asp-for="ProductId" class="fw-semibold fs-6"></label>
+            <select asp-for="ProductId" class="form-control" id="productDropdown" onchange="onProductSelected(this)">
+                <option value="">Choose any one</option>
+            </select>
+        </div>
+
+        <div class="form-group my-2">
+            <label asp-for="Rate" class="fw-semibold fs-6"></label>
+            <input asp-for="Rate" id="rateInput" class="form-control" />
+        </div>
+
+        <div class="form-group my-2">
+            <label asp-for="Quantity" class="fw-semibold fs-6"></label>
+            <input asp-for="Quantity" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Invoice</button>
+    </form>
+
+
+    <div class="mt-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <p class="fw-bold fs-5 m-0 p-0">Grand Total : @gTotal</p>
+            <a asp-controller="Invoice" asp-action="DeleteInvoice" class="btn btn-danger">Clear Invoice</a>
+        </div>
+
+        <table class="table table-striped">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th scope="col" class="py-3">#</th>
+                    <th scope="col" class="py-3">PartyID</th>
+                    <th scope="col" class="py-3">ProductID</th>
+                    <th scope="col" class="py-3">Rate</th>
+                    <th scope="col" class="py-3">Quantity</th>
+                    <th scope="col" class="py-3">Total</th>
+                    @*<th scope="col" class="py-3">Action</th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (InvoiceModel invoice in allInvoice)
+                {
+                    <tr>
+                        <td scope="row">@(allInvoice.IndexOf(invoice) + 1)</td>
+                        <td>@invoice.PartyId</td>
+                        <td>@invoice.ProductId</td>
+                        <td>@invoice.Rate</td>
+                        <td>@invoice.Quantity</td>
+                        <td>@invoice.Total</td>
+                        @*<td>
+                            <button class="btn btn-sm btn-outline-dark">@Html.ActionLink("Edit", "UpdateParty", new { id = party.PartyId })</button>
+                            <button class="btn btn-sm btn-outline-danger">@Html.ActionLink("Delete", "DeleteParty", new { id = party.PartyId })</button>
+                        </td>*@
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        function onPartySelected(select) {
+            var partyId = select.value;
+            $.ajax({
+                type: "POST",
+                url: "/PartyProduct/BindProduct/" + partyId,
+                data: { partyId: partyId },
+                success: function (result) {
+                    var options = "<option value=''>Choose any one</option>";
+                    $.each(result, function (index, product) {
+                        console.log(product);
+                        options += "<option value='" + product.productId + "'>" + product.productName + "</option>";
+                    });
+                    $("#productDropdown").html(options);
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response from controller action
+                }
+            });
+        }
+
+        function onProductSelected(select) {
+            var productId = select.value;
+            $.ajax({
+                type: "POST",
+                url: "/ProductRate/BindRate/" + productId,
+                data: { partyId: productId },
+                success: function (result) {
+                    console.log(result);
+                    $("#rateInput").val(result.rate);
+                },
+                error: function (xhr, status, error) {
+                }
+            });
+        }
+    </script>
+}

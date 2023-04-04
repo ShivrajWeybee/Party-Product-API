@@ -1,0 +1,35 @@
+﻿@{
+    List<PartyProductModel> allAssign = await _partyProductRepo.GetAllAssignAsync();
+}
+
+<div class="container">
+    <h2 class="my-3">Assignings</h2>
+    <a asp-controller="PartyProduct" asp-action="AddNewAssign" class="btn btn-outline-success mb-3">Add Assign</a>
+
+    <table class="table table-striped">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th scope="col" class="py-3">#</th>
+                <th scope="col" class="py-3">Party</th>
+                <th scope="col" class="py-3">Product</th>
+                <th scope="col" class="py-3">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (PartyProductModel assign in allAssign)
+            {
+                PartyModel partyname = await _partyRepo.GetPartyById(assign.PartyId);
+                ProductModel productname = await _productRepo.GetProductById(assign.ProductId);
+                <tr>
+                    <td scope="row">@(allAssign.IndexOf(assign) + 1)</td>
+                    <td>@partyname.PartyName</td>
+                    <td>@productname.ProductName</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary">@Html.ActionLink("Edit", "UpdateAssign", new { id = assign.Id }, new { @class = "text-white text-decoration-none" })</button>
+                        <button class="btn btn-sm btn-danger">@Html.ActionLink("Delete", "DeleteAssign", new { id = assign.Id }, new { @class = "text-white text-decoration-none" })</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PartyProductAPI.Data;
 using PartyProductAPI.Models;
 using System.Collections.Generic;
@@ -10,30 +11,37 @@ namespace PartyProductAPI.Repository
     public class ProductRepository : IProductRepository
     {
         private readonly InvoiceAppContext _context;
+        private readonly IMapper _mapper;
 
-        public ProductRepository(InvoiceAppContext context)
+        public ProductRepository(InvoiceAppContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public async Task<List<ProductModel>> GetAllProduct()
         {
-            var result = await _context.Products.Select(x => new ProductModel()
-            {
-                ProductId = x.ProductId,
-                ProductName = x.ProductName,
-            }).ToListAsync();
-            return result;
+            //var result = await _context.Products.Select(x => new ProductModel()
+            //{
+            //    ProductId = x.ProductId,
+            //    ProductName = x.ProductName,
+            //}).ToListAsync();
+            //return result;
+
+            var result = await _context.Products.ToListAsync();
+            return _mapper.Map<List<ProductModel>>(result);
         }
 
         public async Task<ProductModel> GetProductById(int id)
         {
-            var result = await _context.Products.Where(x => x.ProductId == id).Select(x => new ProductModel()
-            {
-                ProductId = x.ProductId,
-                ProductName = x.ProductName
-            }).FirstOrDefaultAsync();
+            //var result = await _context.Products.Where(x => x.ProductId == id).Select(x => new ProductModel()
+            //{
+            //    ProductId = x.ProductId,
+            //    ProductName = x.ProductName
+            //}).FirstOrDefaultAsync();
+            //return result;
 
-            return result;
+            var result = await _context.Products.FindAsync(id);
+            return _mapper.Map<ProductModel>(result);
         }
 
         public async Task<int> AddNewProduct(ProductModel product)

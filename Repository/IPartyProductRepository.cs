@@ -11,5 +11,6 @@ namespace PartyProductAPI.Repository
         Task<int> AddNewAssignAsync(PartyProductModel assign);
         Task UpdateAssignAsync(int id, PartyProductModel assign);
         Task DeleteAssignAsync(int id);
+        Task<List<ProductModel>> BindProduct(string partyId);
     }
 }

@@ -9,7 +9,7 @@ namespace PartyProductAPI.Repository
         Task<List<PartyModel>> GetAllParty();
         Task<PartyModel> GetPartyById(int id);
         Task<int> AddNewParty(PartyModel party);
-        Task UpdateParty(int id, PartyModel party);
+        Task<int> UpdateParty(int id, PartyModel party);
         Task DeleteParty(int id);
     }
 }

@@ -1,4 +1,5 @@
 ﻿
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PartyProductAPI.Data;
 using PartyProductAPI.Models;
@@ -11,32 +12,40 @@ namespace PartyProductAPI.Repository
     public class PartyRepository : IPartyRepository
     {
         private readonly InvoiceAppContext _context;
+        private readonly IMapper _mapper;
 
-        public PartyRepository(InvoiceAppContext context)
+        public PartyRepository(InvoiceAppContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<List<PartyModel>> GetAllParty()
         {
-            var result = await _context.Parties.Select(x => new PartyModel()
-            {
-                PartyId = x.PartyId,
-                PartyName = x.PartyName,
-            }).ToListAsync();
+            //var result = await _context.Parties.Select(x => new PartyModel()
+            //{
+            //    PartyId = x.PartyId,
+            //    PartyName = x.PartyName,
+            //}).ToListAsync();
 
-            return result;
+            //return result;
+
+            var result = await _context.Parties.ToListAsync();
+            return _mapper.Map<List<PartyModel>>(result);
         }
 
         public async Task<PartyModel> GetPartyById(int id)
         {
-            var result = await _context.Parties.Where(x => x.PartyId == id).Select(x => new PartyModel()
-            {
-                PartyId = x.PartyId,
-                PartyName = x.PartyName,
-            }).FirstOrDefaultAsync();
+            //var result = await _context.Parties.Where(x => x.PartyId == id).Select(x => new PartyModel()
+            //{
+            //    PartyId = x.PartyId,
+            //    PartyName = x.PartyName,
+            //}).FirstOrDefaultAsync();
 
-            return result;
+            //return result;
+
+            var result = await _context.Parties.FindAsync(id);
+            return _mapper.Map<PartyModel>(result);
         }
 
         public async Task<int> AddNewParty(PartyModel party)
@@ -50,7 +59,7 @@ namespace PartyProductAPI.Repository
             return newParty.PartyId;
         }
 
-        public async Task UpdateParty(int id, PartyModel party)
+        public async Task<int> UpdateParty(int id, PartyModel party)
         {
             var findParty = await _context.Parties.FindAsync(id);
 
@@ -59,7 +68,9 @@ namespace PartyProductAPI.Repository
                 findParty.PartyName = party.PartyName;
 
                 await _context.SaveChangesAsync();
+
             }
+            return id;
         }
 
         public async Task DeleteParty(int id)

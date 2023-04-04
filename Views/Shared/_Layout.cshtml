@@ -1,0 +1,73 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration _configuration
+
+@{
+    var appName = _configuration["AppName"];
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div>
+        @*Header*@
+        <div class="bg-dark">
+            <nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light bg-light container">
+                <div class="container-fluid px-5">
+                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">@appName</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a asp-controller="Party" asp-action="GetAllParty" class="nav-link btn">Party</a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Product" asp-action="GetAllProduct" class="nav-link btn">Product</a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="PartyProduct" asp-action="GetAllAssign" class="nav-link btn">Assign Party</a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="ProductRate" asp-action="GetAllProductRate" class="nav-link btn">Product Rate</a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Invoice" asp-action="GetAllInvoice" class="nav-link btn">Invoice</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div>
+            @RenderBody()
+        </div>
+
+    </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/jquery.js"></script>
+        <script src="~lib/jquery-validate/jquery.validate.js"></script>
+        <script src="~lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    </environment>
+
+    <environment exclude="Development">
+        <script src="~/lib/jquery/jquery.min.js"></script>
+        <script src="~lib/jquery-validate/jquery.validate.min.js"></script>
+        @*<script src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>*@
+    </environment>
+
+    @RenderSection("scripts", false)
+</body>
+</html>
