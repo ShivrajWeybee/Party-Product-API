@@ -20,26 +20,12 @@ namespace PartyProductAPI.Repository
         }
         public async Task<List<ProductModel>> GetAllProduct()
         {
-            //var result = await _context.Products.Select(x => new ProductModel()
-            //{
-            //    ProductId = x.ProductId,
-            //    ProductName = x.ProductName,
-            //}).ToListAsync();
-            //return result;
-
             var result = await _context.Products.ToListAsync();
             return _mapper.Map<List<ProductModel>>(result);
         }
 
         public async Task<ProductModel> GetProductById(int id)
         {
-            //var result = await _context.Products.Where(x => x.ProductId == id).Select(x => new ProductModel()
-            //{
-            //    ProductId = x.ProductId,
-            //    ProductName = x.ProductName
-            //}).FirstOrDefaultAsync();
-            //return result;
-
             var result = await _context.Products.FindAsync(id);
             return _mapper.Map<ProductModel>(result);
         }
@@ -78,6 +64,12 @@ namespace PartyProductAPI.Repository
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<ProductWithRate>> GetAllProductWithRate()
+        {
+            var result = await _context.ProductWithRates.ToListAsync();
+            return _mapper.Map<List<ProductWithRate>>(result);
         }
     }
 }

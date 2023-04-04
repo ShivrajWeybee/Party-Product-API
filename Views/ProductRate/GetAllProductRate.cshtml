@@ -14,7 +14,7 @@
                 <th scope="col" class="py-3">Product</th>
                 <th scope="col" class="py-3">Rate</th>
                 <th scope="col" class="py-3">Date of Rate</th>
-                <th scope="col" class="py-3">Action</th>
+                @*<th scope="col" class="py-3">Action</th>*@
             </tr>
         </thead>
         <tbody>
@@ -27,10 +27,10 @@
                     <td>@productname.ProductName</td>
                     <td>@productRate.Rate</td>
                     <td>@productRate.DateOfRate</td>
-                    <td>
+                    @*<td>
                         <button class="btn btn-sm btn-primary">@Html.ActionLink("Edit", "UpdateProductRate", new { id = productRate.PrtId }, new { @class = "text-white text-decoration-none" })</button>
                         <button class="btn btn-sm btn-danger">@Html.ActionLink("Delete", "DeleteProductRate", new { id = productRate.PrtId }, new { @class = "text-white text-decoration-none" })</button>
-                    </td>
+                    </td>*@
                 </tr>
             }
         </tbody>

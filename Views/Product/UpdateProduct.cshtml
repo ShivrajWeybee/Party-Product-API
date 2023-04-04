@@ -10,6 +10,9 @@
             <label asp-for="ProductName" class="fw-semibold fs-5">Product Name</label>
             <input asp-for="ProductName" class="form-control" value=@product.ProductName />
         </div>
-        <button type="submit" class="btn btn-primary">Update</button>
+        <div class="d-flex justify-content-start align-items-center gap-3">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a asp-action="GetAllProduct" asp-controller="Product" class="btn btn-secondary">Cancel</a>
+        </div>
     </form>
 </div>

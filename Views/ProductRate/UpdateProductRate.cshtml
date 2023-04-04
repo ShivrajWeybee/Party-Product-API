@@ -19,6 +19,9 @@
             <label asp-for="DateOfRate" class="fw-semibold fs-6"></label>
             <input asp-for="DateOfRate" class="form-control" disabled="disabled" value="@DateTime.Now" />
         </div>
-        <button type="submit" class="btn btn-primary">Update</button>
+        <div class="d-flex justify-content-start align-items-center gap-3">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a asp-action="GetAllProductRate" asp-controller="ProductRate" class="btn btn-secondary">Cancel</a>
+        </div>
     </form>
 </div>

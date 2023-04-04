@@ -10,8 +10,9 @@
         <thead class="bg-dark text-white">
             <tr>
                 <th scope="col" class="py-3">#</th>
-                <th scope="col" class="py-3">ProductID</th>
-                <th scope="col" class="py-3">ProductName</th>
+                <th scope="col" class="py-3">ID</th>
+                <th scope="col" class="py-3">Product Name</th>
+                <th scope="col" class="py-3">Rate</th>
                 <th scope="col" class="py-3">Action</th>
             </tr>
         </thead>
@@ -22,6 +23,7 @@
                     <td scope="row">@(allProduct.IndexOf(product) + 1)</td>
                     <td>@product.ProductId</td>
                     <td>@product.ProductName</td>
+                    <td>@(product.Rate != 0 ? product.Rate : "-")</td>
                     <td>
                         <button class="btn btn-sm btn-primary">@Html.ActionLink("Edit", "UpdateProduct", new { id = product.ProductId }, new { @class = "text-white text-decoration-none" })</button>
                         <button class="btn btn-sm btn-danger">@Html.ActionLink("Delete", "DeleteProduct", new { id = product.ProductId }, new { @class = "text-white text-decoration-none" })</button>

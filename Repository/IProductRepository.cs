@@ -1,4 +1,5 @@
-﻿using PartyProductAPI.Models;
+﻿using PartyProductAPI.Data;
+using PartyProductAPI.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,5 +12,6 @@ namespace PartyProductAPI.Repository
         Task<int> AddNewProduct(ProductModel product);
         Task UpdateProduct(int id, ProductModel product);
         Task DeleteProduct(int id);
+        Task<List<ProductWithRate>> GetAllProductWithRate();
     }
 }

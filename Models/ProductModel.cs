@@ -8,5 +8,7 @@ namespace PartyProductAPI.Models
 
         [Required]
         public string ProductName { get; set; }
+
+        public decimal Rate { get; set; }
     }
 }

@@ -51,6 +51,7 @@ namespace PartyProductAPI.Repository
 
         public async Task<int> AddNewProductRateAsync(ProductRateModel productRate)
         {
+            // create new ProductRate record
             var newRate = new ProductRate()
             {
                 PrtId = productRate.PrtId,
@@ -58,8 +59,13 @@ namespace PartyProductAPI.Repository
                 Rate = productRate.Rate,
                 DateOfRate = System.DateTime.Now,
             };
-
             _context.ProductRates.Add(newRate);
+
+            // Update product rate in product table.
+            var findProduct = await _context.Products.FindAsync(productRate.ProductID);
+            findProduct.Rate = newRate.Rate;
+
+            // save changes
             await _context.SaveChangesAsync();
 
             return newRate.PrtId;
