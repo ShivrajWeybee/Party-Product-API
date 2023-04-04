@@ -93,8 +93,8 @@ namespace PartyProductAPI.Controllers.PartyProduct
 
 
         // -------------------------------------------------------------------------------
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> DeleteAssign([FromRoute] int id)
+        [HttpGet]
+        public async Task<IActionResult> DeleteAssign(int id)
         {
             await _partyProductRepository.DeleteAssignAsync(id);
             return View("GetAllAssign");

@@ -26,10 +26,28 @@
                     <td>@party.PartyName</td>
                     <td>
                         <button class="btn btn-sm btn-primary">@Html.ActionLink("Edit", "UpdateParty", new { id = party.PartyId }, new { @class = "text-white text-decoration-none" })</button>
-                        <button class="btn btn-sm btn-danger">@Html.ActionLink("Delete", "DeleteParty", new { id = party.PartyId }, new { @class = "text-white text-decoration-none" })</button>
+                        <button class="btn btn-sm btn-danger text-white" onclick="confirmDelete(@party.PartyId)">Delete</button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+@section scripts{
+    <script>
+        function confirmDelete(partyId){
+            if(confirm("Are you sure ? You want to delete this item ?")){
+                $.ajax({
+                url: "/Party/DeleteParty",
+                type: "GET",
+                data: { "id": partyId },
+                success: function () {
+                    // Refresh the page or update the table to reflect the deleted record
+                    location.reload();
+                }
+            });
+            }
+        }
+    </script>
+}
