@@ -61,8 +61,8 @@ namespace PartyProductAPI.Controllers.Party
             {
                 await _partyRepository.AddNewParty(party);
                 ViewBag.Success = true;
+                return View("AddNewParty");
             }
-            //return CreatedAtAction(nameof(GetPartyById), new { id = newParty, controller = "Party" }, await GetPartyById(newParty));
             ViewBag.Success = false;
             return View("AddNewParty");
         }
@@ -74,13 +74,23 @@ namespace PartyProductAPI.Controllers.Party
         {
             var findParty = await _partyRepository.GetPartyById(id);
             ViewBag.Party = findParty;
+            ViewBag.Success = false;
             return View("UpdateParty");
         }
 
         [HttpPost("{id:int}")]
         public async Task<IActionResult> UpdateParty([FromRoute] int id, [FromForm] PartyModel party)
         {
-            await _partyRepository.UpdateParty(id, party);
+            if (ModelState.IsValid)
+            {
+                await _partyRepository.UpdateParty(id, party);
+                ViewBag.Success = true;
+            }
+            else
+            {
+                ViewBag.Success = false;
+            }
+
             ViewBag.Party = party;
             return View("UpdateParty");
         }

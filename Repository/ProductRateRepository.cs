@@ -98,7 +98,7 @@ namespace PartyProductAPI.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ProductRateModel> BindRate(string id)
+        public async Task<ProductModel> BindRate(string id)
         {
             ProductRateModel findRate = await _context.ProductRates.Include(x => x.Product).Where(x => x.ProductId == int.Parse(id)).Select(x => new ProductRateModel()
             {
@@ -108,7 +108,13 @@ namespace PartyProductAPI.Repository
                 DateOfRate = x.DateOfRate,
             }).FirstOrDefaultAsync();
 
-            return findRate;
+            ProductModel findProductRate = await _context.Products.Where(x => x.ProductId == int.Parse(id)).Select(x => new ProductModel(){
+                ProductId= x.ProductId,
+                ProductName= x.ProductName,
+                Rate= (decimal)x.Rate
+            }).FirstOrDefaultAsync();
+
+            return findProductRate;
         }
 
         public async Task<double> GetGrandTotal()

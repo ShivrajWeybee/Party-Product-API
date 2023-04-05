@@ -2,25 +2,35 @@
 @{
     var selectedParty = ViewBag.SelectedParty;
     var selectedProduct = ViewBag.SelectedProduct;
+    var isAlert = ViewBag.Success;
 }
 
 <div class="container">
+    @if (isAlert == true)
+    {
+        <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
+            <strong>Congratulations!</strong> Your item has been updated .
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
     <h2 class="my-3">Update Assign</h2>
     <form asp-action="UpdateAssign" asp-controller="PartyProduct" method="post" enctype="multipart/form-data">
         <div class="form-group my-2">
             <label asp-for="PartyId" class="fw-semibold fs-6"></label>
             <select asp-for="PartyId" class="form-control"
                     asp-items="(await _partyRepo.GetAllParty()).Select(x => new SelectListItem() { Text = x.PartyName, Value = x.PartyId.ToString(), Selected = (x.PartyId == selectedParty) })">
-                <option value="">Choose any one</option>
+                <option value="" disabled="disabled">Choose any one</option>
             </select>
+            <span asp-validation-for="ProductId" class="text-danger"></span>
         </div>
 
         <div class="form-group my-2">
             <label asp-for="ProductId" class="fw-semibold fs-6"></label>
             <select asp-for="ProductId" class="form-control"
                     asp-items="(await _productRepo.GetAllProduct()).Select(x => new SelectListItem() { Text = x.ProductName, Value = x.ProductId.ToString(), Selected = (x.ProductId == selectedProduct) })">
-                <option value="">Choose any one</option>
+                <option value="" disabled="disabled">Choose any one</option>
             </select>
+            <span asp-validation-for="ProductId" class="text-danger"></span>
         </div>
         <div class="d-flex justify-content-start align-items-center gap-3">
             <button type="submit" class="btn btn-primary">Update</button>

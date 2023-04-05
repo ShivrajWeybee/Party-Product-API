@@ -8,23 +8,26 @@
 <div class="bg-dark">
     <nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light bg-light container">
         <div class="container-fluid px-5">
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index">@appName</a>
+            <a class="navbar-brand" asp-controller="Party" asp-action="GetAllParty">@appName</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a>Home</a>
+                        <a asp-controller="Party" asp-action="GetAllParty" class="nav-link btn @(Context.Request.RouteValues["Controller"] as string == "Party" ? "text-white" : "")">Party</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link">About Us</a>
+                        <a asp-controller="Product" asp-action="GetAllProduct" class="nav-link btn @(Context.Request.RouteValues["Controller"] as string == "Product" ? "text-white" : "")">Product</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link">Add Book</a>
+                        <a asp-controller="PartyProduct" asp-action="GetAllAssign" class="nav-link btn @(Context.Request.RouteValues["Controller"] as string == "PartyProduct" ? "text-white" : "")">Assign Party</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link">TempData</a>
+                        <a asp-controller="ProductRate" asp-action="GetAllProductRate" class="nav-link btn @(Context.Request.RouteValues["Controller"] as string == "ProductRate" ? "text-white" : "")">Product Rate</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Invoice" asp-action="GetAllInvoice" class="nav-link btn @(Context.Request.RouteValues["Controller"] as string == "Invoice" ? "text-white" : "")">Invoice</a>
                     </li>
                 </ul>
             </div>

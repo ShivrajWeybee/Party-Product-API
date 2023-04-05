@@ -59,13 +59,23 @@ namespace PartyProductAPI.Controllers.PartyProduct
         [HttpGet]
         public async Task<IActionResult> AddNewAssign()
         {
+            ViewBag.Success = false;
             return View("AddNewAssign");
         }
 
         [HttpPost]
         public async Task<IActionResult> AddNewAssign([FromForm] PartyProductModel assign)
         {
-            await _partyProductRepository.AddNewAssignAsync(assign);
+            if (ModelState.IsValid)
+            {
+                await _partyProductRepository.AddNewAssignAsync(assign);
+                ViewBag.Success = true;
+            }
+            else
+            {
+                ViewBag.Success = false;
+            }
+
             return View("AddNewAssign");
         }
 
@@ -77,13 +87,23 @@ namespace PartyProductAPI.Controllers.PartyProduct
             var tempParty = await _partyProductRepository.GetAssignById(id);
             ViewBag.SelectedParty = tempParty.PartyId;
             ViewBag.SelectedProduct = tempParty.ProductId;
+            ViewBag.Success = false;
             return View();
         }
 
         [HttpPost("{id:int}")]
         public async Task<IActionResult> UpdateAssign([FromRoute] int id, [FromForm] PartyProductModel assign)
         {
-            await _partyProductRepository.UpdateAssignAsync(id, assign);
+            if (ModelState.IsValid)
+            {
+                await _partyProductRepository.UpdateAssignAsync(id, assign);
+                ViewBag.Success = true;
+            }
+            else
+            {
+                ViewBag.Success = false;
+            }
+
             var tempParty = await _partyProductRepository.GetAssignById(id);
             ViewBag.SelectedParty = tempParty.PartyId;
             ViewBag.SelectedProduct = tempParty.ProductId;

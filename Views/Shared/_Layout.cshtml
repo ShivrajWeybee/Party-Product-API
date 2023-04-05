@@ -1,58 +1,23 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using Microsoft.Extensions.Configuration
-@inject IConfiguration _configuration
-
-@{
-    var appName = _configuration["AppName"];
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
 </head>
 <body>
 
     <div>
-        @*Header*@
-        <div class="bg-dark">
-            <nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light bg-light container">
-                <div class="container-fluid px-5">
-                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">@appName</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a asp-controller="Party" asp-action="GetAllParty" class="nav-link btn">Party</a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-controller="Product" asp-action="GetAllProduct" class="nav-link btn">Product</a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-controller="PartyProduct" asp-action="GetAllAssign" class="nav-link btn">Assign Party</a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-controller="ProductRate" asp-action="GetAllProductRate" class="nav-link btn">Product Rate</a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-controller="Invoice" asp-action="GetAllInvoice" class="nav-link btn">Invoice</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </div>
-
+        <partial name="_header" />
         <div>
             @RenderBody()
         </div>
 
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
     <environment include="Development">
         <script src="~/lib/jquery/jquery.js"></script>

@@ -49,6 +49,7 @@ namespace PartyProductAPI.Controllers.Product
         // ---------------------------------------------------------------
         public async Task<ViewResult> AddNewProduct()
         {
+            ViewBag.Success = false;
             return View("AddNewProduct");
         }
 
@@ -58,8 +59,12 @@ namespace PartyProductAPI.Controllers.Product
             if (ModelState.IsValid)
             {
                 await _productRepository.AddNewProduct(product);
+                ViewBag.Success = true;
             }
-            //return CreatedAtAction(nameof(GetProductById), new { id = newProduct, controller = "Product" }, GetProductById(newProduct));
+            else
+            {
+                ViewBag.Success = false;
+            }
             return View("AddNewProduct");
         }
 
@@ -70,20 +75,29 @@ namespace PartyProductAPI.Controllers.Product
         {
             var findProduct = await _productRepository.GetProductById(id);
             ViewBag.Product = findProduct;
+            ViewBag.Success = false;
             return View("UpdateProduct");
         }
 
         [HttpPost("{id:int}")]
         public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromForm] ProductModel product)
         {
-            await _productRepository.UpdateProduct(id, product);
+            if (ModelState.IsValid)
+            {
+                await _productRepository.UpdateProduct(id, product);
+                ViewBag.Success = true;
+            }
+            else
+            {
+                ViewBag.Success = false;
+            }
+
             ViewBag.Product = product;
             return View("UpdateProduct");
         }
 
 
         // ---------------------------------------------------------------
-        //[HttpDelete("{id:int}")]
         [HttpGet]
         public async Task<IActionResult> DeleteProduct(int id)
         {

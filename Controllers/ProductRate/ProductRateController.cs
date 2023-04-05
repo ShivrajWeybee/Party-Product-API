@@ -54,13 +54,22 @@ namespace PartyProductAPI.Controllers.ProductRate
         [HttpGet]
         public async Task<IActionResult> AddNewProductRate()
         {
+            ViewBag.Success = false;
             return View("AddNewProductRate");
         }
 
         [HttpPost]
         public async Task<IActionResult> AddNewProductRate([FromForm] ProductRateModel productRate)
         {
-            var id = await _productRateRepository.AddNewProductRateAsync(productRate);
+            if (ModelState.IsValid)
+            {
+                await _productRateRepository.AddNewProductRateAsync(productRate);
+                ViewBag.Success = true;
+            }
+            else
+            {
+                ViewBag.Success = false;
+            }
             return View("AddNewProductRate");
         }
 
@@ -78,12 +87,6 @@ namespace PartyProductAPI.Controllers.ProductRate
         public async Task<IActionResult> UpdateProductRate([FromRoute] int id, [FromForm] ProductRateModel productRateate)
         {
             var result = await _productRateRepository.UpdateNewRateAsync(id, productRateate);
-            //if (result == true)
-            //{
-            //    return Ok();
-            //}
-            //return NotFound();
-
             var findRate = await _productRateRepository.GetProductByIdAsync(id);
             ViewBag.Rate = findRate;
             return View();
