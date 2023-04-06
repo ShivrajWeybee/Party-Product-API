@@ -17,7 +17,7 @@
     <form asp-action="AddNewParty" asp-controller="Party" method="post" enctype="multipart/form-data">
         <div class="form-group my-2 mb-3">
             <label asp-for="PartyName" class="fw-semibold fs-6">Party Name</label>
-            <input asp-for="PartyName" class="form-control" />
+            <input asp-for="PartyName" class="form-control" value="" />
             <span asp-validation-for="PartyName" class="text-danger"></span>
         </div>
         <div class="d-flex justify-content-start align-items-center gap-3">

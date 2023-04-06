@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using PartyProductAPI.Data;
 using PartyProductAPI.Models;
 using PartyProductAPI.Repository;
@@ -59,6 +59,7 @@ namespace PartyProductAPI
                 };
             });
 
+            services.AddTransient<CustomMiddleware>();
             services.AddTransient<IPartyRepository, PartyRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductRateRepository, ProductRateRepository>();
@@ -78,6 +79,15 @@ namespace PartyProductAPI
                 //app.UseSwagger();
                 //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PartyProductAPI v1"));
             }
+
+            //app.UseMiddleware<CustomMiddleware>();
+
+            //app.Use(async (context, next) =>
+            //{
+            //    await context.Response.WriteAsync("Hello 1");
+            //    await next();
+            //    await context.Response.WriteAsync("Hello 2");
+            //});
 
             app.UseHttpsRedirection();
 

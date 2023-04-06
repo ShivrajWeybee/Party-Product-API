@@ -76,7 +76,7 @@ namespace PartyProductAPI.Controllers.PartyProduct
                 ViewBag.Success = false;
             }
 
-            return View("AddNewAssign");
+            return RedirectToAction("AddNewAssign");
         }
 
 

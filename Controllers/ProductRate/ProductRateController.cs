@@ -70,7 +70,7 @@ namespace PartyProductAPI.Controllers.ProductRate
             {
                 ViewBag.Success = false;
             }
-            return View("AddNewProductRate");
+            return RedirectToAction("AddNewProductRate");
         }
 
 

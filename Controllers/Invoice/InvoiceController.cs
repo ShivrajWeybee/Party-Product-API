@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using PartyProductAPI.Models;
 using PartyProductAPI.Repository;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PartyProductAPI.Controllers.Invoice
@@ -11,10 +13,12 @@ namespace PartyProductAPI.Controllers.Invoice
     public class InvoiceController : Controller
     {
         private readonly IInvoiceRepository _invoiceRepository;
+        private readonly IPartyRepository _partyRepo;
 
-        public InvoiceController(IInvoiceRepository invoiceRepository)
+        public InvoiceController(IInvoiceRepository invoiceRepository, IPartyRepository partyRepo)
         {
             _invoiceRepository = invoiceRepository;
+            _partyRepo = partyRepo;
         }
 
         [ViewData]
@@ -45,15 +49,23 @@ namespace PartyProductAPI.Controllers.Invoice
         [HttpGet]
         public async Task<IActionResult> AddNewInvoice()
         {
+            ViewBag.PartyDropdown = (await _partyRepo.GetAllParty()).Select(x => new SelectListItem() { Text = x.PartyName, Value = x.PartyId.ToString() });
+            ViewBag.ProductDropdown = "";
+            ViewBag.Rate = null;
+            ViewBag.Quantity = null;
             return View("Invoice");
         }
 
         [HttpPost]
         public async Task<IActionResult> AddNewInvoice([FromForm] InvoiceModel invoice)
         {
-            var newInvoice = await _invoiceRepository.AddNewInvoiceAsync(invoice);
-            //return CreatedAtAction(nameof(GetInvoiceById), new { id = newInvoice, controller = "Invoice" }, await GetInvoiceById(newInvoice));
-            return View("Invoice");
+            await _invoiceRepository.AddNewInvoiceAsync(invoice);
+            //return Json(new { success = true });
+            ViewBag.PartyDropdown = (await _partyRepo.GetAllParty()).Select(x => new SelectListItem() { Text = x.PartyName, Value = x.PartyId.ToString() });
+            ViewBag.ProductDropdown = "";
+            ViewBag.Rate = null;
+            ViewBag.Quantity = null;
+            return RedirectToAction("GetAllInvoice");
         }
 
 

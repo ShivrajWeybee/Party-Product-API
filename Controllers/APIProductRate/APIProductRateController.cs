@@ -63,10 +63,14 @@ namespace PartyProductAPI.Controllers.APIProductRate
             return Ok();
         }
 
-        [HttpPost("{id}")]
-        public async Task<IActionResult> BindRate(string id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> BindRate([FromRoute]string id)
         {
             var rateFind = await _productRateRepository.BindRate(id);
+            if (rateFind == null)
+            {
+                return NotFound();
+            }
             return Ok(rateFind);
         }
     }

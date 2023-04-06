@@ -2,24 +2,28 @@
 @{
     List<InvoiceModel> allInvoice = await _invoiceRepo.GetAllInvoiceAsync();
     double gTotal = await _productRateRepo.GetGrandTotal();
+    //List<SelectListItem> partyDd = ViewBag.PartyDropdown;
+    var productDd = ViewBag.ProductDropdown;
+    var rateTb = ViewBag.Rate;
+    var quantityTb = ViewBag.Quantity;
 }
 
 <div class="container mt-2">
     <h2 class="my-3">Invoice</h2>
-    <form asp-action="AddNewInvoice" asp-controller="Invoice" method="post" enctype="multipart/form-data">
+    <form asp-controller="Invoice" asp-action="AddNewInvoice" method="post" enctype="multipart/form-data" id="my-form">
 
         <div class="form-group my-2">
             <label asp-for="PartyId" class="fw-semibold fs-6"></label>
             <select asp-for="PartyId" class="form-control" onchange="onPartySelected(this)" id="partyDropdown"
                     asp-items="(await _partyRepo.GetAllParty()).Select(x => new SelectListItem() { Text = x.PartyName, Value = x.PartyId.ToString() })">
-                <option value="" disabled="disabled" selected="selected">Choose any one</option>
+                <option value="" selected="selected">Choose any one</option>
             </select>
             <span asp-validation-for="PartyId" class="text-danger"></span>
         </div>
 
         <div class="form-group my-2">
             <label asp-for="ProductId" class="fw-semibold fs-6"></label>
-            <select asp-for="ProductId" class="form-control" id="productDropdown" onchange="onProductSelected(this)">
+            <select asp-for="ProductId" class="form-control" id="productDropdown" onchange="onProductSelected(this)" value="@productDd">
                 <option value="" disabled="disabled" selected="selected">Choose any one</option>
             </select>
             <span asp-validation-for="ProductId" class="text-danger"></span>
@@ -27,17 +31,17 @@
 
         <div class="form-group my-2">
             <label asp-for="Rate" class="fw-semibold fs-6"></label>
-            <input asp-for="Rate" id="rateInput" class="form-control" />
+            <input asp-for="Rate" id="rateInput" class="form-control" value="@rateTb" />
             <span asp-validation-for="Rate" class="text-danger"></span>
         </div>
 
         <div class="form-group my-2">
             <label asp-for="Quantity" class="fw-semibold fs-6"></label>
-            <input asp-for="Quantity" class="form-control" />
+            <input asp-for="Quantity" class="form-control" value="@quantityTb" />
             <span asp-validation-for="Quantity" class="text-danger"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary">Add Invoice</button>
+        <button type="submit" class="btn btn-primary" id="submit-button">Add Invoice</button>
     </form>
 
 
@@ -52,28 +56,25 @@
             <thead class="bg-dark text-white">
                 <tr>
                     <th scope="col" class="py-3">#</th>
-                    <th scope="col" class="py-3">PartyID</th>
-                    <th scope="col" class="py-3">ProductID</th>
+                    <th scope="col" class="py-3">Party</th>
+                    <th scope="col" class="py-3">Product</th>
                     <th scope="col" class="py-3">Rate</th>
                     <th scope="col" class="py-3">Quantity</th>
                     <th scope="col" class="py-3">Total</th>
-                    @*<th scope="col" class="py-3">Action</th>*@
                 </tr>
             </thead>
             <tbody>
                 @foreach (InvoiceModel invoice in allInvoice)
                 {
+                    PartyModel partyname = await _partyRepo.GetPartyById(@invoice.PartyId);
+                    ProductModel productname = await _productRepo.GetProductById(invoice.ProductId);
                     <tr>
                         <td scope="row">@(allInvoice.IndexOf(invoice) + 1)</td>
-                        <td>@invoice.PartyId</td>
-                        <td>@invoice.ProductId</td>
+                        <td>@partyname.PartyName</td>
+                        <td>@productname.ProductName</td>
                         <td>@invoice.Rate</td>
                         <td>@invoice.Quantity</td>
                         <td>@invoice.Total</td>
-                        @*<td>
-                            <button class="btn btn-sm btn-outline-dark">@Html.ActionLink("Edit", "UpdateParty", new { id = party.PartyId })</button>
-                            <button class="btn btn-sm btn-outline-danger">@Html.ActionLink("Delete", "DeleteParty", new { id = party.PartyId })</button>
-                        </td>*@
                     </tr>
                 }
             </tbody>
@@ -84,6 +85,10 @@
 
 @section scripts{
     <script>
+        //$(document).ready(function () {
+        //    document.getElementById('partyDropdown').selectedIndex = 0;
+        //}
+
         function onPartySelected(select) {
             var partyId = select.value;
             $.ajax({
@@ -99,7 +104,6 @@
                     $("#productDropdown").html(options);
                 },
                 error: function (xhr, status, error) {
-                    // Handle error response from controller action
                 }
             });
         }
@@ -118,5 +122,25 @@
                 }
             });
         }
+
+                                //$('#submit-button').click(function (event) {
+                                //    event.preventDefault();
+                                //    var formData = new FormData($('#my-form')[0]);  get the form data
+
+                                //    $.ajax({
+                                //        url: '/Invoice/AddNewInvoice',  specify the controller action URL
+                                //        type: 'POST',
+                                //        data: formData,
+                                //        contentType: false,
+                                //        processData: false,
+                                //        success: function (response) {
+                                //             handle the response from the server
+                                //            console.log("holaaaa");
+                                //        },
+                                //        error: function (jqXHR, textStatus, errorThrown) {
+                                //             handle the error
+                                //        }
+                                //    });
+                                //});
     </script>
 }

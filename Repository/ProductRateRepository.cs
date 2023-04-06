@@ -100,14 +100,6 @@ namespace PartyProductAPI.Repository
 
         public async Task<ProductModel> BindRate(string id)
         {
-            ProductRateModel findRate = await _context.ProductRates.Include(x => x.Product).Where(x => x.ProductId == int.Parse(id)).Select(x => new ProductRateModel()
-            {
-                PrtId = x.PrtId,
-                ProductID = x.ProductId,
-                Rate = x.Rate,
-                DateOfRate = x.DateOfRate,
-            }).FirstOrDefaultAsync();
-
             ProductModel findProductRate = await _context.Products.Where(x => x.ProductId == int.Parse(id)).Select(x => new ProductModel(){
                 ProductId= x.ProductId,
                 ProductName= x.ProductName,

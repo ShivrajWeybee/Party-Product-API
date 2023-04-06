@@ -50,7 +50,15 @@ namespace PartyProductAPI.Repository
             //}).FirstOrDefaultAsync();
 
             //return result;
-
+            //var result1 = (from o in _context.Parties
+            //              join i in _context.PartyProducts
+            //              on o.PartyId equals i.PartyId
+            //              select new
+            //              {
+            //                  Name = o.Name,
+            //                  Composer = o.Composer
+                              
+            //              }).Take(5);
             var result = await _context.Invoices.FindAsync(id);
             return _mapper.Map<InvoiceModel>(result);
         }

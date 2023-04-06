@@ -48,6 +48,7 @@ namespace PartyProductAPI.Controllers.Party
 
 
         // ---------------------------------------------------------------
+        [HttpGet]
         public async Task<ViewResult> AddNewParty()
         {
             ViewBag.Success = false;
